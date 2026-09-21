@@ -1,0 +1,14 @@
+# Análisis y preparación de datos
+pandas>=2.0
+numpy>=1.26
+
+# Visualizaciones estáticas del informe
+matplotlib>=3.10
+
+# Dashboard interactivo (se carga desde CDN en el HTML; aquí solo para desarrollo)
+plotly>=5.20
+
+# Generación y ejecución de los notebooks
+nbformat>=5.10
+nbclient>=0.10
+ipykernel>=6.29

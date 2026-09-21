@@ -1,0 +1,215 @@
+{
+  "titulos_total": 31991,
+  "peliculas_total": 16000,
+  "series_total": 15991,
+  "anio_min": 2010,
+  "anio_max": 2025,
+  "anios_cubiertos": 16,
+  "titulos_por_anio_formato": 1000,
+  "calificados": 27431,
+  "calificados_pct": 85.7,
+  "sin_calificar": 4560,
+  "sin_calificar_peliculas": 894,
+  "sin_calificar_series": 3666,
+  "calificacion_media": 6.63,
+  "calificacion_mediana_peliculas": 6.4,
+  "calificacion_media_peliculas": 6.31,
+  "calificacion_mediana_series": 7.2,
+  "calificacion_media_series": 7.02,
+  "brecha_series_peliculas": 0.71,
+  "brecha_anual_minima": 0.54,
+  "anios_series_sobre_peliculas": 16,
+  "brecha_series_peliculas_controlada": 1.13,
+  "anios_series_sobre_peliculas_controlada": 16,
+  "brecha_anual_minima_controlada": 0.9,
+  "calificacion_series_inicio": 6.82,
+  "calificacion_series_fin": 7.31,
+  "calificacion_peliculas_inicio": 6.12,
+  "calificacion_peliculas_fin": 6.45,
+  "popularidad_mediana": 22.1,
+  "popularidad_maxima": 6421.9,
+  "popularidad_p99": 346.7,
+  "titulos_sobre_p99": 320,
+  "ratio_max_mediana": 291,
+  "evaluables": 15397,
+  "umbral_votos": 50,
+  "correlacion_pop_calidad_peliculas": 0.092,
+  "evaluables_peliculas": 12185,
+  "mediana_popularidad_peliculas": 11.4,
+  "correlacion_pop_calidad_series": 0.013,
+  "evaluables_series": 3212,
+  "mediana_popularidad_series": 47.6,
+  "cuad_calidad_sin_visibilidad": 3222,
+  "cuad_exitos": 4438,
+  "cuad_bajo_rendimiento": 4475,
+  "cuad_populares_mal_evaluados": 3262,
+  "pct_calidad_sin_visibilidad": 20.9,
+  "pct_populares_mal_evaluados": 21.2,
+  "cuad_calidad_sin_visibilidad_peliculas": 2569,
+  "cuad_calidad_sin_visibilidad_series": 653,
+  "pct_supera_umbral_peliculas": 80.7,
+  "pct_supera_umbral_series": 26.1,
+  "pct_peliculas_en_evaluables": 79.1,
+  "generos_analizados": 20,
+  "generos_top": [
+    {
+      "genero": "Documental",
+      "titulos": 1426,
+      "calificacion": 7.24
+    },
+    {
+      "genero": "Infantil",
+      "titulos": 681,
+      "calificacion": 7.2
+    },
+    {
+      "genero": "Animación",
+      "titulos": 3802,
+      "calificacion": 7.17
+    },
+    {
+      "genero": "Musical",
+      "titulos": 458,
+      "calificacion": 6.96
+    },
+    {
+      "genero": "Bélico y Político",
+      "titulos": 659,
+      "calificacion": 6.94
+    }
+  ],
+  "generos_bajos": [
+    {
+      "genero": "Terror",
+      "titulos": 2303,
+      "calificacion": 5.72
+    },
+    {
+      "genero": "Suspenso",
+      "titulos": 3648,
+      "calificacion": 6.04
+    },
+    {
+      "genero": "Telenovela",
+      "titulos": 524,
+      "calificacion": 6.25
+    }
+  ],
+  "generos_volumen": [
+    {
+      "genero": "Drama",
+      "titulos": 12956,
+      "calificacion": 6.75
+    },
+    {
+      "genero": "Comedia",
+      "titulos": 8295,
+      "calificacion": 6.66
+    },
+    {
+      "genero": "Acción y Aventura",
+      "titulos": 5868,
+      "calificacion": 6.64
+    }
+  ],
+  "generos_oportunidad": [
+    {
+      "genero": "Documental",
+      "titulos": 1426,
+      "calificacion": 7.24
+    },
+    {
+      "genero": "Infantil",
+      "titulos": 681,
+      "calificacion": 7.2
+    },
+    {
+      "genero": "Musical",
+      "titulos": 458,
+      "calificacion": 6.96
+    },
+    {
+      "genero": "Bélico y Político",
+      "titulos": 659,
+      "calificacion": 6.94
+    },
+    {
+      "genero": "Reality",
+      "titulos": 1210,
+      "calificacion": 6.86
+    },
+    {
+      "genero": "Histórico",
+      "titulos": 721,
+      "calificacion": 6.77
+    }
+  ],
+  "mercados_analizados": 12,
+  "mercados_top": [
+    {
+      "idioma": "Japonés",
+      "titulos": 2544,
+      "calificacion": 7.2
+    },
+    {
+      "idioma": "Chino",
+      "titulos": 1960,
+      "calificacion": 7.07
+    },
+    {
+      "idioma": "Ruso",
+      "titulos": 361,
+      "calificacion": 6.96
+    }
+  ],
+  "ingles_titulos": 13008,
+  "ingles_calificacion": 6.45,
+  "ingles_pct_catalogo": 47.4,
+  "ingles_posicion": 10,
+  "brecha_mejor_mercado_ingles": 0.74,
+  "peliculas_con_finanzas": 3523,
+  "peliculas_con_finanzas_pct": 22.0,
+  "pct_rentables": 63.4,
+  "corr_presupuesto_ingreso": 0.75,
+  "corr_votos_ingreso": 0.72,
+  "corr_calificacion_ingreso": 0.22,
+  "roi_mediano": 1.7,
+  "presupuesto_mediano_millones": 15.2,
+  "rentabilidad_por_escala": [
+    {
+      "escala": "Bajo (<5M)",
+      "peliculas": 813,
+      "pct_rentables": 59.2,
+      "roi_mediano": 1.57
+    },
+    {
+      "escala": "Medio (5-30M)",
+      "peliculas": 1632,
+      "pct_rentables": 56.2,
+      "roi_mediano": 1.29
+    },
+    {
+      "escala": "Alto (30-100M)",
+      "peliculas": 743,
+      "pct_rentables": 72.0,
+      "roi_mediano": 1.96
+    },
+    {
+      "escala": "Muy alto (>100M)",
+      "peliculas": 335,
+      "pct_rentables": 89.6,
+      "roi_mediano": 2.76
+    }
+  ],
+  "budget_ceros_pct": 69.7,
+  "revenue_ceros_pct": 64.7,
+  "director_nulos_series_pct": 68.5,
+  "descripcion_nulos_series_pct": 20.0,
+  "series_id_duplicados": 9,
+  "series_registros_originales": 16000,
+  "peliculas_variables": 18,
+  "series_variables": 16,
+  "generos_solo_peliculas": 11,
+  "generos_solo_series": 9,
+  "registros_dashboard": 30904
+}
