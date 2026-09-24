@@ -534,6 +534,119 @@ def fig_rentabilidad_escala(peliculas):
     return g
 
 
+# --------------------------------------------------------------------------
+# 11. Momentum de genero: rotacion de interes 2010-2018 vs 2022-2024
+#     Pregunta: hacia que generos se esta moviendo la atencion de la audiencia?
+#     Grafico: barras horizontales de variacion porcentual. No se usa el ano
+#     como eje continuo (la correlacion global es practicamente nula) sino
+#     una comparacion de dos ventanas, que aisla la rotacion de interes por
+#     genero de la ausencia de tendencia agregada.
+# --------------------------------------------------------------------------
+def fig_momentum_generos(generos):
+    reciente = (generos[(generos["release_year"] >= 2022) & (generos["release_year"] <= 2024)]
+               .groupby("genero")["popularity"].median())
+    antiguo = (generos[(generos["release_year"] >= 2010) & (generos["release_year"] <= 2018)]
+              .groupby("genero")["popularity"].median())
+    m = pd.DataFrame({"reciente": reciente, "antiguo": antiguo}).dropna()
+    m["variacion"] = (m["reciente"] / m["antiguo"] - 1) * 100
+    m = m.sort_values("variacion")
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    colores = [VERDE if v > 0 else GRIS for v in m["variacion"]]
+    top3 = set(m.nlargest(3, "variacion").index)
+    colores = [ROJO if i in top3 else c for i, c in zip(m.index, colores)]
+    ax.barh(m.index, m["variacion"], color=colores)
+    ax.axvline(0, color=CARBON, lw=1.2)
+    ax.set_xlim(m["variacion"].min() - 22, m["variacion"].max() + 14)
+    for i, (nombre, fila) in enumerate(m.iterrows()):
+        x = fila["variacion"]
+        ax.text(x + (2 if x >= 0 else -2), i, f"{estilo.decimal(x, 1)}%",
+                va="center", ha="left" if x >= 0 else "right",
+                fontsize=9, color=CARBON, fontweight="bold" if nombre in top3 else "normal")
+    ax.set_xlabel("Variación de la popularidad mediana, 2022-2024 vs. 2010-2018")
+    estilo.solo_eje_x(ax)
+    estilo.titular(
+        ax,
+        "Terror, Suspenso y Acción ganan interés; los formatos de estudio lo pierden",
+        "Variación porcentual de la popularidad mediana por género entre ambas ventanas "
+        "· no implica crecimiento del catálogo",
+    )
+    estilo.fuente(fig, "Fuente: catálogo Netflix 2010-2025 · La correlación año-popularidad es "
+                       "prácticamente nula (r=0,13 en películas, r=-0,05 en series): esto mide "
+                       "rotación de interés entre géneros, no una tendencia agregada sostenida.")
+    guardar(fig, "12_momentum_generos")
+    return m
+
+
+# --------------------------------------------------------------------------
+# 12. Programa Joyas Ocultas: caracterizacion del cuadrante para activacion
+#     Pregunta: que forma tiene el contenido de calidad sin visibilidad y
+#     donde esta concentrado?
+#     Grafico: dos paneles. Barras horizontales para el ranking de generos
+#     (el orden comunica) y barras agrupadas para contrastar la calidad del
+#     segmento contra el resto del catalogo evaluable, por formato.
+# --------------------------------------------------------------------------
+def fig_joyas_ocultas(catalogo):
+    ev = catalogo[catalogo["calificado"] & (catalogo["vote_count"] >= 50)].copy()
+    partes = []
+    for tipo in ("Película", "Serie"):
+        s = ev[ev["tipo"] == tipo].copy()
+        mx, my = s["popularity"].median(), s["vote_average"].median()
+        s["cuadrante"] = np.where((s["popularity"] < mx) & (s["vote_average"] > my),
+                                  "joya", "resto")
+        partes.append(s)
+    ev = pd.concat(partes)
+    joyas = ev[ev["cuadrante"] == "joya"]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 6.5),
+                                   gridspec_kw={"width_ratios": [1.3, 1]})
+
+    top = joyas["genero_principal"].value_counts().head(8).sort_values()
+    ax1.barh(top.index, top.values, color=VERDE, alpha=0.85)
+    for i, v in enumerate(top.values):
+        ax1.text(v + top.max() * 0.015, i, estilo.miles(v), va="center",
+                 fontsize=9.5, color=CARBON, fontweight="bold")
+    ax1.set_xlabel("Títulos en el cuadrante «calidad sin visibilidad»")
+    estilo.solo_eje_x(ax1)
+    ax1.set_title("¿Dónde están las joyas?", fontsize=12.5, fontweight="bold",
+                  loc="left", color=CARBON, pad=10)
+
+    x = np.arange(2)
+    ancho = 0.32
+    cal_joyas = [joyas.loc[joyas["tipo"] == t, "vote_average"].mean()
+                for t in ("Película", "Serie")]
+    cal_resto = [ev.loc[(ev["cuadrante"] == "resto") & (ev["tipo"] == t), "vote_average"].mean()
+                for t in ("Película", "Serie")]
+    ax2.bar(x - ancho/2, cal_joyas, ancho, color=VERDE, label="Joyas ocultas")
+    ax2.bar(x + ancho/2, cal_resto, ancho, color=GRIS, label="Resto del catálogo evaluable")
+    for xi, v in zip(x - ancho/2, cal_joyas):
+        ax2.text(xi, v + 0.08, estilo.decimal(v), ha="center", fontsize=10,
+                 fontweight="bold", color=CARBON)
+    for xi, v in zip(x + ancho/2, cal_resto):
+        ax2.text(xi, v + 0.08, estilo.decimal(v), ha="center", fontsize=10,
+                 color=CARBON)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(["Películas", "Series"])
+    ax2.set_ylabel("Calificación promedio de la audiencia")
+    ax2.set_ylim(0, 9.5)
+    ax2.legend(loc="upper left", fontsize=9.5)
+    estilo.solo_eje_y(ax2)
+    ax2.set_title("¿Qué tan buenas son?", fontsize=12.5, fontweight="bold",
+                  loc="left", color=CARBON, pad=10)
+
+    fig.suptitle("El catálogo ya contiene el contenido: falta exponerlo",
+                 fontsize=15.5, fontweight="bold", x=0.01, ha="left", y=1.04,
+                 color=CARBON)
+    fig.text(0.01, 0.985,
+             f"Programa Joyas Ocultas · {estilo.miles(len(joyas))} títulos calificados por sobre "
+             "la mediana de su formato, con popularidad por debajo de ella",
+             fontsize=10.5, color="#6B6B6B", ha="left", va="top")
+    estilo.fuente(fig)
+    fig.tight_layout(rect=[0, 0, 1, 0.87])
+    guardar(fig, "11_joyas_ocultas")
+    return joyas
+
+
 def main():
     estilo.aplicar_estilo()
     catalogo, generos, peliculas = cargar()
@@ -549,6 +662,8 @@ def main():
     _, pct = fig_financiero(peliculas)
     fig_heatmap_genero_ano(generos)
     escala = fig_rentabilidad_escala(peliculas)
+    momentum = fig_momentum_generos(generos)
+    joyas = fig_joyas_ocultas(catalogo)
 
     print("\n--- CIFRAS CLAVE PARA EL INFORME ---")
     for tipo, r in cuadrantes.items():

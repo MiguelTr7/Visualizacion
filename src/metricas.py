@@ -135,6 +135,63 @@ def calcular():
             (s["vote_count"] >= UMBRAL).mean() * 100, 1)
     m["pct_peliculas_en_evaluables"] = round((ev["tipo"] == "Película").mean() * 100, 1)
 
+    # --- Propuesta comercial 2: Programa "Joyas Ocultas" -----------------
+    # Caracterizacion del cuadrante "calidad sin visibilidad" para fundamentar
+    # la propuesta de activacion editorial: por genero, por idioma, y su
+    # calidad promedio frente al resto del catalogo evaluable.
+    m["joyas_calificacion_media_peliculas"] = round(
+        joyas.loc[joyas["tipo"] == "Película", "vote_average"].mean(), 2)
+    m["joyas_calificacion_media_series"] = round(
+        joyas.loc[joyas["tipo"] == "Serie", "vote_average"].mean(), 2)
+    resto = ev[ev["cuadrante"] != "calidad_sin_visibilidad"]
+    m["resto_calificacion_media_peliculas"] = round(
+        resto.loc[resto["tipo"] == "Película", "vote_average"].mean(), 2)
+    m["resto_calificacion_media_series"] = round(
+        resto.loc[resto["tipo"] == "Serie", "vote_average"].mean(), 2)
+
+    top_generos_joyas = joyas["genero_principal"].value_counts().head(5)
+    m["joyas_top_generos"] = [
+        {"genero": g, "titulos": int(n)} for g, n in top_generos_joyas.items()]
+    top_idiomas_joyas = joyas["idioma"].value_counts().head(5)
+    m["joyas_top_idiomas"] = [
+        {"idioma": i, "titulos": int(n)} for i, n in top_idiomas_joyas.items()]
+
+    ejemplos = (joyas.sort_values("vote_average", ascending=False)
+               .drop_duplicates(subset="genero_principal")
+               .head(6))
+    m["joyas_ejemplos"] = [
+        {"title": r.title, "tipo": r.tipo, "anio": int(r.release_year),
+         "genero": r.genero_principal, "idioma": r.idioma,
+         "calificacion": round(r.vote_average, 2), "votos": int(r.vote_count)}
+        for r in ejemplos.itertuples()]
+
+    # --- Propuesta comercial 1: Radar de Momentum por Genero -------------
+    # Variacion de la popularidad mediana entre 2010-2018 y 2022-2024. Es la
+    # base de la propuesta de adquisicion dirigida por genero en alza: mide
+    # rotacion de interes, no crecimiento general del catalogo.
+    reciente = (generos[(generos["release_year"] >= 2022) & (generos["release_year"] <= 2024)]
+               .groupby("genero")["popularity"].median())
+    antiguo = (generos[(generos["release_year"] >= 2010) & (generos["release_year"] <= 2018)]
+              .groupby("genero")["popularity"].median())
+    momentum = pd.DataFrame({"reciente": reciente, "antiguo": antiguo}).dropna()
+    momentum["variacion_pct"] = round((momentum["reciente"] / momentum["antiguo"] - 1) * 100, 1)
+    momentum = momentum.sort_values("variacion_pct", ascending=False)
+    m["momentum_top_generos"] = [
+        {"genero": g, "variacion_pct": r.variacion_pct,
+         "popularidad_reciente": round(r.reciente, 1)}
+        for g, r in momentum.head(5).iterrows()]
+    m["momentum_bottom_generos"] = [
+        {"genero": g, "variacion_pct": r.variacion_pct,
+         "popularidad_reciente": round(r.reciente, 1)}
+        for g, r in momentum.tail(3).iterrows()]
+    m["correlacion_anio_popularidad_peliculas"] = round(
+        catalogo.loc[catalogo["tipo"] == "Película", "release_year"]
+        .corr(catalogo.loc[catalogo["tipo"] == "Película", "popularity"]), 3)
+    m["correlacion_anio_popularidad_series"] = round(
+        catalogo.loc[catalogo["tipo"] == "Serie", "release_year"]
+        .corr(catalogo.loc[catalogo["tipo"] == "Serie", "popularity"]), 3)
+
+
     # --- Generos --------------------------------------------------------
     g = (generos[generos["vote_count"] > 0]
          .groupby("genero")

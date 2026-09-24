@@ -761,6 +761,14 @@ calidad.</strong></p>
 <section>
 <h2><span class="num">8</span>Justificación de las representaciones gráficas</h2>
 
+<p>Las 12 figuras del informe se implementaron en <strong>Python con Matplotlib</strong>, a través
+de un módulo de estilo propio (<code>src/estilo.py</code>) que centraliza paleta, tipografía y
+reglas de diseño para que ninguna decisión visual se tome de forma aislada. El dashboard
+interactivo de la sección 10 se implementó en <strong>Plotly</strong>. Ambas herramientas se
+eligieron por ser librerías de código abierto que permiten control total sobre cada atributo
+visual —color, escala, anotación— y porque generan salidas reproducibles desde los mismos scripts
+que procesan los datos, sin pasos manuales entre el análisis y la figura final.</p>
+
 <p>Cada representación se seleccionó a partir de la naturaleza de las variables y de la tarea de
 lectura que debía habilitar, no por variedad visual.</p>
 
@@ -825,7 +833,7 @@ el dashboard.</li>
 
 <!-- ============ 9. NARRATIVA VISUAL ============ -->
 <section>
-<h2><span class="num">9</span>Desarrollo de la narrativa visual</h2>
+<h2><span class="num">9</span>Desarrollo de la narrativa visual (Data Storytelling)</h2>
 
 <p>La narrativa se estructuró sobre el arco clásico de <em>data storytelling</em> —contexto,
 tensión, resolución— porque la audiencia principal no necesita un recorrido por los datos sino una
@@ -870,6 +878,29 @@ se le presenta como oportunidad de eficiencia: valor ya pagado que no se está c
 cuadrantes con acciones diferenciadas. Al <strong>equipo de producto</strong> se le ofrece el
 dashboard para que identifique los títulos concretos sobre los que intervenir.</p>
 </div>
+
+<h3>Integración de recursos de comunicación oral, escrita y visual</h3>
+<p>La narrativa se sostiene sobre tres canales que se refuerzan entre sí y no compiten por la
+atención del receptor:</p>
+<table>
+<thead><tr><th style="width:16%">Recurso</th><th style="width:32%">Cómo se integra</th>
+<th>Dónde ocurre</th></tr></thead>
+<tbody>
+<tr><td><strong>Oral</strong></td>
+<td>Explicación en vivo del arco contexto-tensión-giro-resolución durante la defensa; cada
+integrante narra el tramo del hallazgo que le corresponde y responde preguntas cruzadas sobre el
+resto.</td>
+<td>Defensa técnica (10 min de exposición + 5 min de preguntas)</td></tr>
+<tr><td><strong>Escrita</strong></td>
+<td>Titulares que afirman el hallazgo, subtítulos con el detalle técnico y tamaño muestral,
+anotaciones dentro de cada figura, y el desarrollo argumentado de este informe.</td>
+<td>Informe ejecutivo · rótulos de las Figuras 1 a 12</td></tr>
+<tr><td><strong>Visual</strong></td>
+<td>Paleta de acento único por figura, iconografía de color consistente para los cuatro
+cuadrantes de negocio, y el dashboard interactivo para exploración en tiempo real.</td>
+<td>Figuras del informe · Presentación ejecutiva · Dashboard</td></tr>
+</tbody>
+</table>
 </section>
 
 <!-- ============ 10. DASHBOARD ============ -->
@@ -1029,9 +1060,154 @@ formato y conclusiones falsas.</td></tr>
 </table>
 </section>
 
-<!-- ============ 12. CONCLUSIONES ============ -->
+<!-- ============ 12. PROPUESTAS COMERCIALES ============ -->
 <section>
-<h2><span class="num">12</span>Conclusiones y recomendaciones</h2>
+<h2><span class="num">12</span>Propuestas comerciales: de hallazgos a decisiones</h2>
+
+<p>Los hallazgos de la sección 7 no son solo diagnóstico: definen tres palancas concretas de
+adquisición y retención que StreamView Analytics puede activar con el catálogo que ya posee, sin
+comprometer presupuesto de licenciamiento. Las tres se apoyan exclusivamente en variables de
+catálogo y recepción —popularidad, calificación, votos, género, formato y año—, sin asumir ni
+interpretar datos financieros que este proyecto no posee.</p>
+
+<h3>12.1 Programa Joyas Ocultas</h3>
+
+<div class="destacado verde">
+<span class="et">Estrategia prioritaria</span>
+<p>Activar en el descubrimiento los <strong>{n(m['cuad_calidad_sin_visibilidad'])} títulos</strong>
+que ya están en el catálogo, ya calificados por encima de la mediana de su propio formato, pero
+con popularidad por debajo de ella. Es la única de las tres propuestas cuyo costo de adquisición
+de contenido es cero: el activo ya está pagado.</p>
+</div>
+
+{figura('11_joyas_ocultas', 11, 'Caracterización del cuadrante «calidad sin visibilidad»: dónde se concentra por género (izquierda) y cuánto mejor califica la audiencia a estos títulos frente al resto del catálogo evaluable, por formato (derecha).')}
+
+<p><strong>Hallazgo que la respalda.</strong> El segmento no es un accidente estadístico marginal:
+representa el {d(m['pct_calidad_sin_visibilidad'], 1)}% del catálogo evaluable
+({n(m['cuad_calidad_sin_visibilidad_peliculas'])} películas y
+{n(m['cuad_calidad_sin_visibilidad_series'])} series) y su calidad promedio supera claramente al
+resto del catálogo evaluable: {d(m['joyas_calificacion_media_peliculas'])} frente a
+{d(m['resto_calificacion_media_peliculas'])} en películas, y {d(m['joyas_calificacion_media_series'])}
+frente a {d(m['resto_calificacion_media_series'])} en series. Se concentra especialmente en
+{m['joyas_top_generos'][0]['genero']} ({n(m['joyas_top_generos'][0]['titulos'])} títulos),
+{m['joyas_top_generos'][1]['genero']} ({n(m['joyas_top_generos'][1]['titulos'])}) y
+{m['joyas_top_generos'][2]['genero']} ({n(m['joyas_top_generos'][2]['titulos'])}), y en mercados
+como el {m['joyas_top_idiomas'][1]['idioma'].lower()} y el
+{m['joyas_top_idiomas'][2]['idioma'].lower()}, que en la sección 7.8 ya aparecían como
+sistemáticamente mejor evaluados que el idioma dominante del catálogo.</p>
+
+<table>
+<thead><tr><th>Título de ejemplo</th><th>Formato</th><th class="num">Año</th>
+<th>Género</th><th>Idioma</th><th class="num">Calificación</th></tr></thead>
+<tbody>
+{"".join(f"<tr><td>{e['title']}</td><td>{e['tipo']}</td><td class='num'>{e['anio']}</td>"
+        f"<td>{e['genero']}</td><td>{e['idioma']}</td>"
+        f"<td class='num'>{d(e['calificacion'])}</td></tr>" for e in m['joyas_ejemplos'])}
+</tbody>
+</table>
+<p style="font-size:9pt; color:#6B6B6B; margin-top:-2mm">Un título por género, ordenados por
+calificación dentro del segmento «calidad sin visibilidad». Ilustran el tipo de contenido que el
+programa expondría, no una selección editorial curada a mano.</p>
+
+<h4>Mecanismo de atracción</h4>
+<p>Marketing editorial de nicho —"lo mejor calificado que nadie está viendo"— dirigido a audiencias
+que valoran calidad sobre tendencia. Es un ángulo de adquisición de bajo costo que no compite por
+el mismo público masivo que persiguen las campañas basadas en éxitos de taquilla, y que se apoya en
+evidencia verificable (la calificación real de la audiencia) en lugar de en presupuesto de
+marketing.</p>
+
+<h4>Mecanismo de retención</h4>
+<p>Una fila fija y renovada mensualmente en la pantalla de inicio ("Alta calificación, poco
+vistas"), personalizada por el género favorito de cada usuario. Ataca directamente la
+<strong>sensación de catálogo agotado</strong> —un antecedente habitual de cancelación— sin
+requerir una sola incorporación de contenido nuevo.</p>
+
+<h4>KPI sugerido</h4>
+<p><strong>% de usuarios activos que reproducen al menos un título del segmento «calidad sin
+visibilidad» por mes</strong>, junto con la calificación implícita de esas reproducciones (aceptada
+vs. abandonada) frente al resto del consumo del usuario. Un aumento sostenido de este porcentaje
+mide, con datos ya disponibles en la plataforma, si la exposición está funcionando.</p>
+
+<h3>12.2 Radar de Momentum por Género</h3>
+
+{figura('12_momentum_generos', 12, 'Variación porcentual de la popularidad mediana por género entre la ventana 2022-2024 y la ventana 2010-2018. En rojo, los tres géneros con mayor variación positiva.')}
+
+<div class="destacado naranja">
+<span class="et">Precisión metodológica</span>
+<p>La correlación entre año de estreno y popularidad es prácticamente nula
+({d(m['correlacion_anio_popularidad_peliculas'])} en películas,
+{d(m['correlacion_anio_popularidad_series'])} en series): <strong>no existe una tendencia agregada
+de popularidad creciente hacia 2024</strong>. Lo que sí es real y verificable es una
+<strong>rotación de interés entre géneros</strong>: algunos ganan terreno relativo, otros lo
+pierden. Esta propuesta se apoya en esa rotación, no en un crecimiento general que los datos no
+sostienen.</p>
+</div>
+
+<p><strong>Hallazgo que la respalda.</strong> Entre ambas ventanas, {m['momentum_top_generos'][0]['genero']}
+(+{d(m['momentum_top_generos'][0]['variacion_pct'], 1)}%), {m['momentum_top_generos'][1]['genero']}
+(+{d(m['momentum_top_generos'][1]['variacion_pct'], 1)}%) y {m['momentum_top_generos'][2]['genero']}
+(+{d(m['momentum_top_generos'][2]['variacion_pct'], 1)}%) muestran el mayor aumento relativo de
+popularidad mediana, mientras que {m['momentum_bottom_generos'][2]['genero']}
+({d(m['momentum_bottom_generos'][2]['variacion_pct'], 1)}%) y
+{m['momentum_bottom_generos'][1]['genero']} ({d(m['momentum_bottom_generos'][1]['variacion_pct'], 1)}%)
+retroceden.</p>
+
+<h4>Mecanismo de atracción</h4>
+<p>Campañas de adquisición segmentadas que usan el ranking de momentum como brief creativo: se
+pauta sobre los géneros en alza relativa, no sobre el catálogo genérico. El indicador se recalcula
+periódicamente y redefine qué género protagoniza la campaña del período siguiente.</p>
+
+<h4>Mecanismo de retención</h4>
+<p>El onboarding registra el género que motivó la conversión del usuario adquirido y prioriza ese
+género en las primeras sesiones de recomendación, evitando la disonancia entre la promesa de la
+campaña y la primera experiencia dentro de la plataforma.</p>
+
+<h4>KPI sugerido</h4>
+<p><strong>Variación trimestral de la popularidad mediana por género</strong> (gatillo de campaña),
+junto con la <strong>tasa de finalización de la primera sesión</strong> dentro del género que
+motivó la adquisición.</p>
+
+<h3>12.3 Series como ancla de suscripción</h3>
+
+<p><strong>Hallazgo que la respalda.</strong> Como se documentó en la sección 7.6, las series
+superan a las películas en calificación los {m['anios_series_sobre_peliculas']} años analizados sin
+excepción, con una brecha que <strong>aumenta</strong> a {d(m['brecha_series_peliculas_controlada'])}
+puntos al controlar por número de votos. No es un artefacto de muestra: es una ventaja estructural
+del formato episódico.</p>
+
+<h4>Mecanismo de atracción</h4>
+<p>Usar series del segmento de alta calificación como gancho de prueba —primer episodio gratuito—
+en campañas de adquisición, capitalizando que el formato episódico recibe mejor recepción promedio
+que el cine.</p>
+
+<h4>Mecanismo de retención</h4>
+<p>El formato episódico retiene por diseño: prioriza en el algoritmo de "continuar viendo" las
+series de alta calificación sobre las de solo alta popularidad, apostando por construir el hábito
+de retorno semanal en lugar del consumo de un evento único.</p>
+
+<h4>KPI sugerido</h4>
+<p><strong>Tasa de retorno semanal (WAU)</strong> segmentada según si el usuario inició con una
+serie o con una película, y <strong>número de episodios completados</strong> en los primeros siete
+días desde el registro.</p>
+
+<h3>12.4 Síntesis</h3>
+<table>
+<thead><tr><th style="width:26%">Propuesta</th><th style="width:30%">Palanca principal</th>
+<th>KPI</th></tr></thead>
+<tbody>
+<tr><td><strong>Joyas Ocultas</strong></td><td>Retención por descubrimiento, costo de contenido cero</td>
+<td>% de usuarios que consumen el segmento al mes</td></tr>
+<tr><td><strong>Momentum por Género</strong></td><td>Adquisición dirigida por rotación de interés</td>
+<td>Variación trimestral de popularidad por género</td></tr>
+<tr><td><strong>Series como Ancla</strong></td><td>Retención por hábito de consumo episódico</td>
+<td>Retorno semanal y episodios completados en 7 días</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============ 13. CONCLUSIONES ============ -->
+<section>
+<h2><span class="num">13</span>Conclusiones y recomendaciones</h2>
 
 <h3>12.1 Conclusiones</h3>
 <ol>

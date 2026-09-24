@@ -38,9 +38,9 @@ exclusivas de un formato.
 |---|---|---|
 | 1 | Informe ejecutivo | `reports/informe_ejecutivo/informe_ejecutivo.html` |
 | 2 | Dashboard interactivo | `dashboard/dashboard.html` |
-| 3 | Presentación ejecutiva (16 diapositivas) | `reports/informe_ejecutivo/presentacion_ejecutiva.html` |
+| 3 | Presentación ejecutiva (18 diapositivas) | `reports/informe_ejecutivo/presentacion_ejecutiva.html` (HTML) y `.pptx` (PowerPoint) |
 | 4 | Notebooks documentados | `notebooks/01…`, `notebooks/02…` |
-| 5 | Visualizaciones | `images/` (10 figuras) |
+| 5 | Visualizaciones | `images/` (12 figuras) |
 | 6 | Datos y código reproducible | `data/`, `src/` |
 
 ### Cómo obtener los PDF
@@ -81,17 +81,19 @@ visualizacion/
 │   ├── estilo.py                Estándar visual (paleta, tipografía, reglas)
 │   ├── data_prep.py             Limpieza, armonización e integración
 │   ├── metricas.py              Consolidación de todas las cifras
-│   ├── eda_visualizaciones.py   Las 10 figuras del informe
+│   ├── eda_visualizaciones.py   Las 12 figuras del informe
 │   ├── dashboard_build.py       Generador del dashboard interactivo
 │   ├── informe_build.py         Generador del informe ejecutivo
-│   ├── presentacion_build.py    Generador de la presentación
+│   ├── presentacion_build.py    Generador de la presentación (HTML)
+│   ├── presentacion_pptx.py     Generador de la presentación (PowerPoint)
 │   └── notebooks_build.py       Generador y ejecutor de los notebooks
 ├── dashboard/
 │   └── dashboard.html           Dashboard autocontenido
-├── images/                      10 visualizaciones en PNG
+├── images/                      12 visualizaciones en PNG
 ├── reports/informe_ejecutivo/
 │   ├── informe_ejecutivo.html
-│   └── presentacion_ejecutiva.html
+│   ├── presentacion_ejecutiva.html
+│   └── presentacion_ejecutiva.pptx
 ├── requirements.txt
 └── README.md
 ```
@@ -105,10 +107,11 @@ pip install -r requirements.txt
 
 python src/data_prep.py            # Fase 3: limpieza e integración
 python src/metricas.py             # Consolidación de cifras
-python src/eda_visualizaciones.py  # Fase 4: las 10 figuras
+python src/eda_visualizaciones.py  # Fase 4: las 12 figuras
 python src/dashboard_build.py      # Fase 6: dashboard
 python src/informe_build.py        # Fase 6: informe ejecutivo
-python src/presentacion_build.py   # Fase 6: presentación
+python src/presentacion_build.py   # Fase 6: presentación (HTML)
+python src/presentacion_pptx.py    # Fase 6: presentación (PowerPoint)
 python src/notebooks_build.py      # Notebooks ejecutados con salidas
 ```
 
@@ -128,6 +131,23 @@ se leen desde `metricas.json`, por lo que si cambian los datos de origen, cambia
 | 4 | El mercado dominante no es el mejor valorado | El inglés: 47,4% del catálogo, puesto 10 de 12 en calidad |
 | 5 | Los géneros mejor evaluados son los menos representados | Documental 7,24 · Infantil 7,20 · Musical 6,96 |
 | 6 | El riesgo comercial está en el tramo medio | 56,2% de éxito frente a 89,6% en el tramo muy alto |
+
+---
+
+## Propuestas comerciales (Informe §12)
+
+Tres estrategias de adquisición y retención derivadas de los hallazgos anteriores, sin usar
+variables financieras — solo popularidad, calificación, votos, género, formato y año.
+
+| Propuesta | Hallazgo que la respalda | Palanca | KPI |
+|---|---|---|---|
+| **1. Programa Joyas Ocultas** *(prioritaria)* | 3.222 títulos ya en catálogo, bien evaluados, con baja visibilidad | Exposición editorial, costo de contenido cero | % de usuarios que consumen el segmento al mes |
+| 2. Radar de Momentum por Género | Rotación real de interés (Terror +93,8%, Suspenso +78,3%); no hay tendencia agregada (r≈0) | Adquisición dirigida por género en alza | Variación trimestral de popularidad por género |
+| 3. Series como Ancla de Suscripción | Ventaja de +1,13 puntos de las series sobre películas, sostenida 16 años | Retención por hábito episódico | Retorno semanal y episodios completados en 7 días |
+
+La Propuesta 1 recibe tratamiento extendido en el informe (figura dedicada, ejemplos de títulos
+reales, mecanismo detallado) y una diapositiva propia en la presentación, por ser la única que no
+requiere inversión en contenido nuevo.
 
 ---
 
@@ -187,7 +207,7 @@ El proyecto aplica un estándar único definido en `src/estilo.py` y replicado e
 | Objetivos del proyecto | Informe §2 |
 | Audiencia objetivo y propósito comunicacional | Informe §3 · Diapositiva 2 |
 | Descripción e integración de las fuentes de datos | Informe §5-6 · `notebooks/01` |
-| Análisis exploratorio mediante visualizaciones | Informe §7 · `notebooks/02` · 10 figuras |
+| Análisis exploratorio mediante visualizaciones | Informe §7 · `notebooks/02` · 12 figuras |
 | Justificación de las representaciones gráficas | Informe §8 · comentarios en `eda_visualizaciones.py` |
 | Narrativa visual (Data Storytelling) | Informe §9 · Diapositivas 5-12 |
 | Dashboard interactivo con KPIs, filtros e interacción | Informe §10 · `dashboard/dashboard.html` |

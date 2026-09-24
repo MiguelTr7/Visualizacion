@@ -270,7 +270,7 @@ def construir(m):
 
     # 7 ---------------------------------------------------------------
     s.append(diapo(7, f"""
-  <div class="et">Tensión</div>
+  <div class="et">Narrativa visual (Data Storytelling) · Tensión</div>
   <h2>Pero la atención no se reparte: se concentra en una minoría</h2>
   <div class="cuerpo">
     <div class="col" style="flex:0 0 62mm">
@@ -391,8 +391,10 @@ def construir(m):
       destinatario puede abrir sin licencia, sin instalación y sin levantar un servidor</b>.
       Los {n(m['registros_dashboard'])} registros se embeben en el archivo: el filtrado ocurre en
       el navegador y funciona sin conexión.</div></div>
-    <p style="font-size:11pt; color:#6B6B6B; margin-top:5mm">Comparte paleta, tipografía y
-    convención numérica con el informe: quien pasa del documento al tablero reconoce los mismos
+    <p style="font-size:11pt; color:#6B6B6B; margin-top:5mm">Todo el proyecto se construyó en
+    Python: <b>Matplotlib</b> para las 12 figuras estáticas del informe y <b>Plotly</b> para este
+    dashboard, ambos gobernados por el mismo módulo de estilo — comparten paleta, tipografía y
+    convención numérica, así que quien pasa del documento al tablero reconoce los mismos
     gráficos, ahora explorables.</p>
   </div></div>"""))
 
@@ -430,6 +432,65 @@ def construir(m):
 
     # 15 --------------------------------------------------------------
     s.append(diapo(15, f"""
+  <div class="et">De hallazgos a decisiones comerciales</div>
+  <h2>Tres palancas para atraer y retener, sin tocar presupuesto de contenido</h2>
+  <div class="cuerpo"><div class="col">
+    <div class="cuadros" style="grid-template-columns:repeat(3,1fr)">
+      <div class="cuadro verde"><div class="t">1 · Joyas Ocultas</div>
+        <div class="c">{n(m['cuad_calidad_sin_visibilidad'])}</div>
+        <div class="x"><b>Hallazgo:</b> títulos ya en catálogo, bien evaluados, con baja
+        visibilidad.<br><b>Atracción:</b> marketing editorial de nicho.<br>
+        <b>Retención:</b> fila fija de descubrimiento.<br>
+        <b>KPI:</b> % de usuarios que los consumen al mes.</div></div>
+      <div class="cuadro rojo"><div class="t">2 · Momentum por Género</div>
+        <div class="c">+{d(m['momentum_top_generos'][0]['variacion_pct'], 0)}%</div>
+        <div class="x"><b>Hallazgo:</b> rotación real de interés entre géneros (no crecimiento
+        agregado).<br><b>Atracción:</b> campañas segmentadas por género en alza.<br>
+        <b>Retención:</b> onboarding anclado al género de entrada.<br>
+        <b>KPI:</b> variación trimestral de popularidad por género.</div></div>
+      <div class="cuadro" style="border-left-color:var(--azul)"><div class="t">3 · Series como Ancla</div>
+        <div class="c">+{d(m['brecha_series_peliculas_controlada'])}</div>
+        <div class="x"><b>Hallazgo:</b> ventaja estructural de series sobre películas, 16 años
+        sin excepción.<br><b>Atracción:</b> primer episodio gratuito.<br>
+        <b>Retención:</b> hábito de consumo episódico.<br>
+        <b>KPI:</b> retorno semanal y episodios en 7 días.</div></div>
+    </div>
+    <p style="font-size:10.5pt; color:#6B6B6B; margin-top:5mm">Ninguna propuesta usa variables
+    financieras: las tres se apoyan solo en popularidad, calificación, votos, género, formato y
+    año — las mismas variables que sostienen el resto de este análisis.</p>
+  </div></div>"""))
+
+    # 16 --------------------------------------------------------------
+    joyas_ej = m['joyas_ejemplos'][:4]
+    filas_joyas = "".join(
+        f"<tr><td>{e['title']}</td><td>{e['tipo']}</td><td>{e['genero']}</td>"
+        f"<td class='num'>{d(e['calificacion'])}</td></tr>" for e in joyas_ej)
+    s.append(diapo(16, f"""
+  <div class="et">Propuesta prioritaria</div>
+  <h2>Programa Joyas Ocultas: el contenido ya está pagado, falta exponerlo</h2>
+  <div class="cuerpo">
+    <div class="fig" style="flex:1.5"><img src="{img('11_joyas_ocultas')}" alt=""></div>
+    <div class="col" style="flex:0 0 78mm">
+      <div class="cifra v2" style="margin-bottom:5mm">
+        <div class="v">{d(m['pct_calidad_sin_visibilidad'], 1)}%</div>
+        <div class="e">del catálogo evaluable: {n(m['cuad_calidad_sin_visibilidad_peliculas'])}
+        películas y {n(m['cuad_calidad_sin_visibilidad_series'])} series</div></div>
+      <p style="font-size:11pt">Califican en promedio
+      <b>{d(m['joyas_calificacion_media_peliculas'])}</b> (películas) y
+      <b>{d(m['joyas_calificacion_media_series'])}</b> (series) — por encima del resto del
+      catálogo evaluable ({d(m['resto_calificacion_media_peliculas'])} y
+      {d(m['resto_calificacion_media_series'])}).</p>
+      <table style="margin-top:4mm">
+        <thead><tr><th>Ejemplo</th><th>Formato</th><th>Género</th><th class="num">Calif.</th></tr></thead>
+        <tbody>{filas_joyas}</tbody>
+      </table>
+      <p style="font-size:10pt; color:#6B6B6B; margin-top:3mm">Costo de adquisición de
+      contenido: <b>cero</b>. La palanca es exposición, no compra.</p>
+    </div>
+  </div>"""))
+
+    # 17 --------------------------------------------------------------
+    s.append(diapo(17, f"""
   <div class="et">Recomendaciones</div>
   <h2>Cinco decisiones, ordenadas por costo de implementación</h2>
   <div class="cuerpo"><div class="col">
@@ -455,7 +516,7 @@ def construir(m):
     </table>
   </div></div>"""))
 
-    # 16 --------------------------------------------------------------
+    # 18 --------------------------------------------------------------
     s.append(f"""<div class="diapo cierre">
   <div class="et">Conclusión</div>
   <h2>StreamView Analytics no tiene un problema de catálogo.<br>Tiene un problema de visibilidad.</h2>
@@ -463,8 +524,12 @@ def construir(m):
   Solo no se está mostrando.</p>
   <p style="margin-top:8mm; font-size:13pt; color:#8E8A8A">
   De todas las palancas examinadas, cerrar esa brecha es la de menor costo y mayor retorno esperado.</p>
+  <p style="margin-top:12mm; font-size:10pt; color:#6B6B6B; max-width:200mm">
+  Esta narrativa se sostuvo en tres canales: <b style="color:#B8B4B4">oral</b> durante la defensa,
+  <b style="color:#B8B4B4">escrita</b> en el informe ejecutivo, y <b style="color:#B8B4B4">visual</b>
+  en estas diapositivas y en el dashboard interactivo.</p>
   <div class="marca" style="color:#5A5555">Stream<b>View</b> Analytics</div>
-  <div class="num-diapo" style="color:#5A5555">16</div>
+  <div class="num-diapo" style="color:#5A5555">18</div>
 </div>""")
 
     return f"""<!doctype html>
@@ -507,7 +572,7 @@ def main():
     salida = OUT / "presentacion_ejecutiva.html"
     salida.write_text(construir(m), encoding="utf-8")
     print(f"{salida}  ({salida.stat().st_size/1024/1024:.1f} MB)")
-    print("16 diapositivas · exportar con Ctrl+P > Guardar como PDF (horizontal)")
+    print("18 diapositivas · exportar con Ctrl+P > Guardar como PDF (horizontal)")
 
 
 if __name__ == "__main__":
