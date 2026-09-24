@@ -755,6 +755,19 @@ con el presupuesto ({d(m['corr_presupuesto_ingreso'])}) y con el número de voto
 ({d(m['corr_votos_ingreso'])}) —es decir, con la escala de exposición— pero muy débilmente con la
 calificación ({d(m['corr_calificacion_ingreso'])}). <strong>La taquilla mide alcance, no
 calidad.</strong></p>
+
+<h3>7.10 Rentabilidad por temática</h3>
+{figura('13_roi_genero', 11, 'Retorno de inversión mediano por género, solo películas con dato financiero válido. En rojo, los tres géneros más rentables. Géneros ordenados de menor a mayor retorno; se excluyen los que registran menos de 30 películas con dato financiero.')}
+
+<p>Además de la escala de inversión, la temática del contenido también predice el retorno.
+{m['roi_genero_top'][0]['genero']} ({d(m['roi_genero_top'][0]['roi'])}x),
+{m['roi_genero_top'][1]['genero'].lower()} ({d(m['roi_genero_top'][1]['roi'])}x) y
+{m['roi_genero_top'][2]['genero'].lower()} ({d(m['roi_genero_top'][2]['roi'])}x) son las temáticas
+que más retorno generan por dólar invertido, mientras que {m['roi_genero_bottom']['genero'].lower()}
+es la única que en promedio no alcanza a recuperar su inversión
+({d(m['roi_genero_bottom']['roi'])}x). Se usa la mediana y no el promedio porque el ROI tiene una
+cola de outliers extrema —un puñado de éxitos de taquilla infla artificialmente el promedio de
+varios géneros— y la mediana describe mejor el retorno de la producción típica.</p>
 </section>
 
 <!-- ============ 8. JUSTIFICACIÓN GRÁFICA ============ -->
@@ -811,6 +824,17 @@ comparación numérica en una lectura posicional inmediata: por encima o por deb
 <tr><td>10 · Rentabilidad</td><td>Barras verticales con doble codificación</td>
 <td>Categorías ordinales (tramos de presupuesto) en su orden natural. La altura muestra la tasa de
 éxito y la etiqueta interior el retorno, evitando que el lector deba cruzar dos gráficos.</td></tr>
+<tr><td>11 · ROI por género</td><td>Barras horizontales ordenadas</td>
+<td>Ranking de categorías nominales: el orden comunica, no el color. Se reserva el acento rojo
+para los tres géneros de mayor retorno, y la mediana evita que un puñado de outliers financieros
+distorsione la lectura del género típico.</td></tr>
+<tr><td>12 · Joyas ocultas</td><td>Barras horizontales + barras agrupadas</td>
+<td>Panel doble: ranking de géneros a la izquierda, comparación directa de calidad (joyas vs.
+resto) por formato a la derecha. Separar ambas preguntas evita saturar un único gráfico.</td></tr>
+<tr><td>13 · Momentum de género</td><td>Barras horizontales de variación</td>
+<td>La variable es un cambio porcentual, no una magnitud absoluta: el eje centrado en cero y el
+color (verde/rojo vs. gris) separan visualmente los géneros que ganan interés de los que lo
+pierden.</td></tr>
 </tbody>
 </table>
 
@@ -862,8 +886,8 @@ mercados subexplotados— y confirman que el patrón es estable en el tiempo, no
 anomalía.</li>
 
 <li><strong>Cierre económico: qué cuesta y qué rinde.</strong><br>
-Las Figuras 9 y 10 aterrizan la discusión en términos de inversión, y muestran que el riesgo no
-está donde la intuición lo ubica.</li>
+Las Figuras 9 a 11 aterrizan la discusión en términos de inversión, y muestran que ni la escala
+del presupuesto ni la temática elegida garantizan por sí solas el retorno.</li>
 
 <li><strong>Resolución: la acción de costo cero.</strong><br>
 La narrativa cierra sobre una conclusión que no requiere presupuesto adicional: activar el
@@ -1080,7 +1104,7 @@ con popularidad por debajo de ella. Es la única de las tres propuestas cuyo cos
 de contenido es cero: el activo ya está pagado.</p>
 </div>
 
-{figura('11_joyas_ocultas', 11, 'Caracterización del cuadrante «calidad sin visibilidad»: dónde se concentra por género (izquierda) y cuánto mejor califica la audiencia a estos títulos frente al resto del catálogo evaluable, por formato (derecha).')}
+{figura('11_joyas_ocultas', 12, 'Caracterización del cuadrante «calidad sin visibilidad»: dónde se concentra por género (izquierda) y cuánto mejor califica la audiencia a estos títulos frente al resto del catálogo evaluable, por formato (derecha).')}
 
 <p><strong>Hallazgo que la respalda.</strong> El segmento no es un accidente estadístico marginal:
 representa el {d(m['pct_calidad_sin_visibilidad'], 1)}% del catálogo evaluable
@@ -1130,7 +1154,7 @@ mide, con datos ya disponibles en la plataforma, si la exposición está funcion
 
 <h3>12.2 Radar de Momentum por Género</h3>
 
-{figura('12_momentum_generos', 12, 'Variación porcentual de la popularidad mediana por género entre la ventana 2022-2024 y la ventana 2010-2018. En rojo, los tres géneros con mayor variación positiva.')}
+{figura('12_momentum_generos', 13, 'Variación porcentual de la popularidad mediana por género entre la ventana 2022-2024 y la ventana 2010-2018. En rojo, los tres géneros con mayor variación positiva.')}
 
 <div class="destacado naranja">
 <span class="et">Precisión metodológica</span>

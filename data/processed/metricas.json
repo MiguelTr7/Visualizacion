@@ -351,6 +351,29 @@
       "roi_mediano": 2.76
     }
   ],
+  "roi_genero_top": [
+    {
+      "genero": "Documental",
+      "roi": 2.83,
+      "peliculas": 32
+    },
+    {
+      "genero": "Animación",
+      "roi": 2.29,
+      "peliculas": 284
+    },
+    {
+      "genero": "Familiar",
+      "roi": 2.17,
+      "peliculas": 386
+    }
+  ],
+  "roi_genero_bottom": {
+    "genero": "Western",
+    "roi": 0.59,
+    "peliculas": 34
+  },
+  "roi_generos_analizados": 16,
   "budget_ceros_pct": 69.7,
   "revenue_ceros_pct": 64.7,
   "director_nulos_series_pct": 68.5,

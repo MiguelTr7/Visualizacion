@@ -262,6 +262,28 @@ def calcular():
          "pct_rentables": r.pct_rentables, "roi_mediano": r.roi_mediano}
         for i, r in esc.iterrows()]
 
+    # ROI mediano por genero (solo peliculas). Mismo criterio de armonizacion
+    # de taxonomia y de umbral minimo que el grafico 13_roi_genero.png, para
+    # que el informe cite exactamente lo que el grafico muestra.
+    from data_prep import GENEROS
+    g_roi = (fin[["show_id", "genres", "roi"]]
+            .assign(genero=fin["genres"].str.split(", "))
+            .explode("genero"))
+    g_roi["genero"] = g_roi["genero"].map(GENEROS)
+    g_roi = g_roi.dropna(subset=["genero"]).drop_duplicates(subset=["show_id", "genero"])
+    roi_por_genero = (g_roi.groupby("genero")
+                      .agg(peliculas=("roi", "size"), roi=("roi", "median"))
+                      .query("peliculas >= 30")
+                      .sort_values("roi", ascending=False))
+    m["roi_genero_top"] = [
+        {"genero": i, "roi": round(r.roi, 2), "peliculas": int(r.peliculas)}
+        for i, r in roi_por_genero.head(3).iterrows()]
+    peor_roi = roi_por_genero.iloc[-1]
+    m["roi_genero_bottom"] = {
+        "genero": roi_por_genero.index[-1], "roi": round(peor_roi.roi, 2),
+        "peliculas": int(peor_roi.peliculas)}
+    m["roi_generos_analizados"] = int(len(roi_por_genero))
+
     # --- Calidad de datos (para la evaluacion critica) ------------------
     # Se leen los archivos originales para que estas cifras describan el dato
     # crudo y no el ya depurado.
