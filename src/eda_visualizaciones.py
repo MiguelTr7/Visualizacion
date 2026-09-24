@@ -18,6 +18,7 @@ from matplotlib.ticker import FuncFormatter
 sys.path.insert(0, str(Path(__file__).parent))
 import estilo
 from estilo import ROJO, AZUL, CARBON, GRIS, NARANJA, VERDE, TIPO_COLOR
+from data_prep import GENEROS
 
 PROC = Path("data/processed")
 IMG = Path("images")
@@ -535,6 +536,66 @@ def fig_rentabilidad_escala(peliculas):
 
 
 # --------------------------------------------------------------------------
+# 13. Retorno de inversion por genero (solo peliculas)
+#     Pregunta: que tematicas rinden mejor por cada dolar invertido?
+#     Grafico: barras horizontales ordenadas de menor a mayor retorno. En un
+#     ranking, el orden es lo que comunica; la orientacion horizontal evita
+#     rotar los nombres de genero. Se usa la mediana, no el promedio: el ROI
+#     tiene outliers extremos (un puñado de taquillazos) que inflarian el
+#     promedio y darian una imagen enganosa del genero tipico.
+# --------------------------------------------------------------------------
+def fig_roi_genero(peliculas, umbral_min=30):
+    fin = peliculas.dropna(subset=["budget", "revenue"])
+    fin = fin[(fin["budget"] > 1000) & (fin["revenue"] > 1000)].copy()
+
+    g = (fin[["show_id", "genres", "roi"]]
+         .assign(genero=fin["genres"].str.split(", "))
+         .explode("genero"))
+    g["genero"] = g["genero"].map(GENEROS)
+    g = g.dropna(subset=["genero"]).drop_duplicates(subset=["show_id", "genero"])
+
+    # matplotlib barh dibuja la primera fila del dataframe ABAJO del eje.
+    # Para que la lectura de arriba hacia abajo sea "menos rentable primero,
+    # mas rentable al final" (tal como se pidio) hay que entregarle los datos
+    # en orden DESCENDENTE: la fila mas rentable queda primera -> abajo, y la
+    # menos rentable queda ultima -> arriba.
+    r = (g.groupby("genero")
+         .agg(peliculas=("roi", "size"), roi=("roi", "median"))
+         .query("peliculas >= @umbral_min")
+         .sort_values("roi", ascending=False))
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    top3 = set(r.head(3).index)
+    colores = [ROJO if genero in top3 else GRIS for genero in r.index]
+    barras = ax.barh(r.index, r["roi"], color=colores)
+
+    ax.axvline(1, color=CARBON, lw=1.2, ls="--")
+    ax.text(1.02, -0.7, "punto de equilibrio (1x)", fontsize=8.5, color=CARBON)
+
+    for barra, (_, fila) in zip(barras, r.iterrows()):
+        ax.text(barra.get_width() + max(r["roi"]) * 0.015,
+                barra.get_y() + barra.get_height() / 2,
+                f"{estilo.decimal(fila['roi'])}x", va="center", ha="left",
+                fontsize=10.5, fontweight="bold", color=CARBON)
+
+    ax.set_xlabel("Retorno de inversión mediano (ingresos / presupuesto)")
+    ax.set_xlim(0, r["roi"].max() * 1.18)
+    estilo.solo_eje_x(ax)
+    estilo.titular(
+        ax,
+        "Documental, Animación y Familiar son las temáticas más rentables por dólar invertido",
+        "Retorno de inversión mediano por género · solo películas con dato financiero · "
+        f"géneros con {umbral_min} títulos o más",
+    )
+    estilo.fuente(fig, "Fuente: catálogo Netflix 2010-2025 · ROI = ingresos / presupuesto, "
+                       "excluyendo presupuestos e ingresos en cero (dato faltante) · se usa la "
+                       "mediana porque el promedio queda distorsionado por unos pocos títulos "
+                       "con retorno extremo.")
+    guardar(fig, "13_roi_genero")
+    return r
+
+
+# --------------------------------------------------------------------------
 # 11. Momentum de genero: rotacion de interes 2010-2018 vs 2022-2024
 #     Pregunta: hacia que generos se esta moviendo la atencion de la audiencia?
 #     Grafico: barras horizontales de variacion porcentual. No se usa el ano
@@ -664,6 +725,7 @@ def main():
     escala = fig_rentabilidad_escala(peliculas)
     momentum = fig_momentum_generos(generos)
     joyas = fig_joyas_ocultas(catalogo)
+    roi_genero = fig_roi_genero(peliculas)
 
     print("\n--- CIFRAS CLAVE PARA EL INFORME ---")
     for tipo, r in cuadrantes.items():
